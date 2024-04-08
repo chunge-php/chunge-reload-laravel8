@@ -1,9 +1,0 @@
-<?php
-namespace App\Logic\{{namespace}}\{{v}};
-use App\Logic\Logic;
-use App\Models;
-class {{class_name}} extends Logic
-{
-  //--{{describe}}
-  {{logic_default}}
-}
