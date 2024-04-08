@@ -34,10 +34,10 @@ class Installer
         //创建安装记录标识
         $this->CreateInstallJosinFile();
         echo "执行成功 successfully!" . PHP_EOL;
-        echo "开始卸载 chunge/laravel !" . PHP_EOL;
-        $path =  'composer remove chunge/laravel';
+        echo "开始卸载 chunge/reload-laravel8 !" . PHP_EOL;
+        $path =  'composer remove chunge/reload-laravel8';
         exec($path);
-        echo "卸载成功 chunge/laravel !" . PHP_EOL;
+        echo "卸载成功 chunge/reload-laravel8 !" . PHP_EOL;
         sleep(4);
         $this->CreateComposer();
     }
