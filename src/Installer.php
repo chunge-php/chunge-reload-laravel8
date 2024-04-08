@@ -55,7 +55,7 @@ class Installer
     {
         $sourcePath = __DIR__ . '/stubs/demo/stubs/Services'; // 指定要复制的文件夹路径
         $project_path = $this->getBasePath();
-        $destinationPath = $project_path . '/app/Http/Services';
+        $destinationPath = $project_path . '/app/Services';
         // 执行文件复制操作
         $this->recursiveCopy($sourcePath, $destinationPath);
     }
