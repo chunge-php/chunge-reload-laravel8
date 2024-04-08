@@ -31,8 +31,6 @@ class Installer
         $this->CopyServicesDir();
         $this->CreateDatabase();
         $this->CreateModels();
-        $this->CreateLogicBase();
-        $this->CreateLogicFileBase();
         //创建安装记录标识
         $this->CreateInstallJosinFile();
         echo "执行成功 successfully!" . PHP_EOL;
