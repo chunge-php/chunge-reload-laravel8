@@ -55,11 +55,12 @@ class CreateLogic extends Command
             $this->createModel($class_name, $describe);
         }
         //创建逻辑层
-        $this->createServices($controller_name, $class_name, $describe, $v);
-        //创建表单验证层
+        $this->createLogic($controller_name, $class_name, $describe, $v);
+        //创建控制层
+        $this->createController($controller_name, $class_name, $describe, $v);
         $this->createRequest($controller_name, $class_name, $describe, $v);
         //创建路由层
-        $this->createRoutesTo($controller_name, $class_name, $describe, $v);
+        $this->createRoutes($controller_name, $class_name, $describe, $v);
         $this->info('一键创建逻辑成功 春哥牛逼' . logMyImg());
     }
     /**
@@ -91,22 +92,22 @@ class CreateLogic extends Command
     /**
      * 创建逻辑层
      */
-    public function createServices($controller_name, $class_name, $describe = '', $v = 'v1')
+    public function createLogic($controller_name, $class_name, $describe = '', $v = 'v1')
     {
         //逻辑层文件地址
-        $services_file = app_path() . '/Services' . "/{$controller_name}/$v/" . $class_name . 'Service.php';
+        $logic_file = app_path() . '/Logic' . "/{$controller_name}/$v/" . $class_name . '.php';
         //命名空间
-        $services_path = dirname($services_file); //返回路径中的目录部分
+        $logic_path = dirname($logic_file); //返回路径中的目录部分
         //获取模板,替换变量
-        $services = file_get_contents(base_path('/stubs/my_services.stub'));
-        $services_default = file_get_contents(base_path('/stubs/my_default_services.stub'));
-        $source = str_replace('{{v}}', $v, $services);
+        $logic = file_get_contents(base_path('/stubs/my_logic.stub'));
+        $logic_default = file_get_contents(base_path('/stubs/my_default_logic.stub'));
+        $source = str_replace('{{v}}', $v, $logic);
         $source = str_replace('{{namespace}}', $controller_name, $source);
         $source = str_replace('{{describe}}', $describe, $source);
         $source = str_replace('{{class_name}}', $class_name, $source);
-        $source = str_replace('{{services_default}}', $services_default, $source);
+        $source = str_replace('{{logic_default}}', $logic_default, $source);
         $source = str_replace('{{model_name}}', $class_name, $source);
-        $this->createFileSend($services_file, $services_path, $source, '逻辑层');
+        $this->createFileSend($logic_file, $logic_path, $source, '逻辑层');
     }
     /**
      * 创建表单验证
@@ -127,45 +128,36 @@ class CreateLogic extends Command
         $this->createFileSend($logic_file, $logic_path, $source, '表单验证层');
     }
     /**
-     * 新版创建路由
+     * 创建路由
      */
-    public function createRoutesTo($controller_name, $class_name, $describe, $v)
+    public function createRoutes($controller_name, $class_name, $describe, $v)
     {
+        $use_controller_path =  'use App\Http\Controllers' . "\\{$controller_name}\\" . "$v\\" . $class_name . 'Controller;';
 
         //路由层文件地址
         $controller =  str_replace('_', '/', toUnderScore($class_name));
         //文件地址
-        $routes_template_path = base_path('routes\\' . strtolower($controller_name) . '.php');
-        if (!file_exists($routes_template_path)) {
-            $routes_default_template =  file_get_contents(base_path('/stubs/routes_default_template.stub')); //获取路由默认模板
-            $ower_controller_name =  strtolower($controller_name);
-
-            $routes_default_template = str_replace('{{controller_name}}', $controller_name, $routes_default_template);
-            $routes_default_template = str_replace('{{ower_controller_name}}', $ower_controller_name, $routes_default_template);
-            if (!file_put_contents($routes_template_path, $routes_default_template)) {
-                $this->error("路由创建失败！");
-                exit;
-            }
-            $routes_template = $routes_default_template;
-        } else {
-            $routes_template = file_get_contents($routes_template_path); //获取路由文件
-        }
-
+        $routes_file = base_path('routes\\' . strtolower($controller_name) . '.php');
+        $template = file_get_contents($routes_file);
+        $my_routes_controller_path = file_get_contents(base_path('/stubs/my_routes_controller_path.stub'));
+        $source = str_replace('{{ControllerPath}}', $use_controller_path, $my_routes_controller_path);
+        $template = str_replace('//ControllerPath', $source, $template);
 
         $default_method = file_get_contents(base_path('/stubs/my_routes.stub'));
-        $source = str_replace('//addController', $default_method, $routes_template);
+        $source = str_replace('//addController', $default_method, $template);
         $source = str_replace('{{controller}}', $controller, $source);
         $source = str_replace('{{describe}}', $describe, $source);
+        $source = str_replace('{{class_name}}', $class_name . 'Controller', $source);
 
         $controller_name_str  = str_replace('/', '.', $controller);
-        $source = str_replace('{{controller_name_str}}', $class_name, $source);
+        $source = str_replace('{{controller_name_str}}', $controller_name_str, $source);
         $source = str_replace('{{controller_name}}', strtolower($controller_name), $source);
         //写入
-        if (!file_put_contents($routes_template_path, $source)) {
+        if (!file_put_contents($routes_file, $source)) {
             $this->error('路由层追加失败！');
             exit;
         }
-        $this->createRoutesDescription($controller_name, $class_name, $describe, $v);
+        $this->createRoutesDescription($controller_name, $controller_name_str, $describe, $v);
         $this->info('文件重新加载中............');
         exec('composer dump-autoload'); //重新加载文件
         $this->info('文件重新加载成功............');
@@ -175,9 +167,8 @@ class CreateLogic extends Command
         Artisan::call('view:cache'); //清除视图缓存
         $this->info('缓存已清除');
     }
-
     /** 创建路由描述 */
-    public function createRoutesDescription($controller_name, $class_name, $describe, $verison)
+    public function createRoutesDescription($controller_name, $controller_name_str, $describe, $verison)
     {
         $controller_name =  strtolower($controller_name);
         $lang = ['en', 'zh'];
@@ -187,10 +178,10 @@ class CreateLogic extends Command
             // 获取当前文件的内容，如果文件不存在则返回一个空数组
             $currentData = file_exists($file) ? require $file : [];
             $newData =  [
-                $controller_name . '.' . $class_name . 'Service' . "{$class_name}Index" => $describe . '-列表',
-                $controller_name . '.' . $class_name . 'Service' . "{$class_name}Create" => $describe . '-创建',
-                $controller_name . '.' . $class_name . 'Service' . "{$class_name}Show" => $describe . '-详情',
-                $controller_name . '.' . $class_name . 'Service' . "{$class_name}Destroy" => $describe . '-删除',
+                $controller_name . '.' . $controller_name_str . '.index' => $describe . '-列表',
+                $controller_name . '.' . $controller_name_str . '.create' => $describe . '-创建',
+                $controller_name . '.' . $controller_name_str . '.show' => $describe . '-详情',
+                $controller_name . '.' . $controller_name_str . '.destroy' => $describe . '-删除',
             ];
             if (isset($currentData[$controller_name . '.' . $verison])) {
                 $currentData[$controller_name . '.' . $verison] = array_merge($currentData[$controller_name . '.' . $verison], $newData);

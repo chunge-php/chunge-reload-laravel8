@@ -1,6 +1,6 @@
 <?php
 
-use Chunge\ReloadLaravel8\Installer;
+use Chunge\Laravel\Installer;
 
 $model  = new Installer();
 if ($model->BaseJianCe()) {

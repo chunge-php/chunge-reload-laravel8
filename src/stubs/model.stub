@@ -1,9 +1,0 @@
-<?php
-
-namespace DummyNamespace;
-
-
-class DummyClass extends BaseModel
-{
-  //
-}
