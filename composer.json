@@ -1,0 +1,28 @@
+{
+    "name": "chunge/reload-laravel8",
+    "description": "快速构建业务代码结构方便快速开始编写业务代码",
+    "type": "library",
+    "require": {
+        "laravel/framework": "8.*",
+        "php": "7.3.*|8.*"
+    },
+    "require-dev": {
+        "laravel/framework": "8.*",
+        "php": "7.3.*|8.*"
+    },
+    "license": "MIT",
+    "autoload": {
+        "files": [
+            "src/setup.php"
+        ],
+        "psr-4": {
+            "Chunge\\ReloadLaravel8\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "chunge"
+        }
+    ],
+    "minimum-stability": "stable"
+}
