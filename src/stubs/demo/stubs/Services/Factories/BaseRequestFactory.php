@@ -12,7 +12,7 @@ class BaseRequestFactory
         if (!class_exists($className)) {
             $className = "App\\Http\\Requests\\{$MyClass}";
             if (!class_exists($className)) {
-                throw new \Exception("Request class {$className} does not exist.");
+               return $request;
             }
         }
 

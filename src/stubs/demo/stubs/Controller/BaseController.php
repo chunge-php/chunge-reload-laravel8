@@ -17,7 +17,7 @@ class BaseController extends Controller
         $route_info = $this->getRouteInfo($request->route()->getName());
         $module_name =  isset($route_info[0]) ? $route_info[0] : '';
         $class_name =  isset($route_info[3]) ? $route_info[3] : '';
-        $formRequest = $this->baseRequestVerify($module_name, $class_name);
+        $formRequest = $this->baseRequestVerify($module_name, $class_name,$request);
         try {
             $all = $formRequest->all();
             $fun_name = $route_info[4];
@@ -35,7 +35,7 @@ class BaseController extends Controller
     {
         $route_info = $this->getRouteInfo($request->route()->getName());
         $module_name =  isset($route_info[0]) ? $route_info[0] : '';
-        $formRequest =  $this->baseRequestVerify($module_name, 'BaseIdRequest');
+        $formRequest =  $this->baseRequestVerify($module_name, 'BaseIdRequest',$request);
         try {
             $all = $formRequest->all();
             $fun_name = $route_info[4];
@@ -55,7 +55,7 @@ class BaseController extends Controller
         $route_info = $this->getRouteInfo($request->route()->getName());
         $module_name =  isset($route_info[0]) ? $route_info[0] : '';
         $class_name =  isset($route_info[3]) ? $route_info[3] : '';
-        $formRequest = $this->baseRequestVerify($module_name, $class_name);
+        $formRequest = $this->baseRequestVerify($module_name, $class_name,$request);
         try {
             $all = $formRequest->all();
             $LogicModel = $this->baseRequestForm($route_info);
@@ -76,7 +76,7 @@ class BaseController extends Controller
     {
         $route_info = $this->getRouteInfo($request->route()->getName());
         $module_name =  isset($route_info[0]) ? $route_info[0] : '';
-        $formRequest =  $this->baseRequestVerify($module_name, 'BaseIdRequest');
+        $formRequest =  $this->baseRequestVerify($module_name, 'BaseIdRequest',$request);
         try {
             $all = $formRequest->all();
             $LogicModel = $this->baseRequestForm($route_info);
