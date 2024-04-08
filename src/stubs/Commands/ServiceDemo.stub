@@ -4,14 +4,14 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-class Logic extends Command
+class Service extends Command
 {
      /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'make:logic  {namespace} {class_name} {describe?} ';
+    protected $signature = 'make:service  {namespace} {class_name} {describe?} ';
 
     /**
      * The console command description.

@@ -10,7 +10,6 @@ class Installer
     private $Support_path  = '\app\Support';
     private $Config_path  = '\config';
     private $routes_path  = '\routes';
-    private $logic_path  = 'app\Logic';
 
     public  function copyFiles()
     {
@@ -108,8 +107,8 @@ class Installer
     //创建增删改业务接口
     private function CreateLogic()
     {
-        $file_name = 'CreateLogic';
-        $demo_name = 'CreateLogicDemo';
+        $file_name = 'MakeService';
+        $demo_name = 'MakeServiceDemo';
         $message = '创建增删改业务接口文件命令';
         $this->BaseCommands($file_name, $demo_name, $message);
     }
@@ -124,25 +123,12 @@ class Installer
     //创建逻辑层命令文件
     private function Logic()
     {
-        $file_name = 'Logic';
-        $demo_name = 'LogicDemo';
+        $file_name = 'Service';
+        $demo_name = 'ServiceDemo';
         $message = '创建逻辑层命令文件';
         $this->BaseCommands($file_name, $demo_name, $message);
     }
-    private function CreateLogicBase()
-    {
-        $file_name = 'Logic';
-        $demo_name = 'BaseLogicDemo';
-        $message = '创建公用逻辑层文件';
-        $this->BaseLogic($file_name, $demo_name, $message);
-    }
-    private function CreateLogicFileBase()
-    {
-        $file_name = 'LogicFile';
-        $demo_name = 'LogicFileDemo';
-        $message = '创建公用LogicFile逻辑层文件';
-        $this->BaseLogic($file_name, $demo_name, $message);
-    }
+  
     private function CreateDatabase()
     {
         $content = file_get_contents(__DIR__ . '\stubs\DatabaseDemo.stub');
@@ -484,14 +470,7 @@ class Installer
         $file_dir_path =  $project_path . $this->commands_path  . $file_path;
         $this->createFileSend($file_dir_path, $content, $message);
     }
-    private function BaseLogic($file_name, $demo_name, $message = '')
-    {
-        $content = file_get_contents(__DIR__ . '\stubs\\' . $demo_name . '.stub');
-        $project_path = $this->getBasePath();
-        $file_path = '\\' . $file_name . '.php';
-        $file_dir_path =  $project_path . $this->logic_path  . $file_path;
-        $this->createFileSend($file_dir_path, $content, $message);
-    }
+  
     private function getBasePath()
     {
         $project_path = explode('vendor', __DIR__);
