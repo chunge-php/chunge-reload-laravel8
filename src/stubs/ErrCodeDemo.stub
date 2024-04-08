@@ -1,0 +1,44 @@
+<?php
+
+namespace App\Exceptions;
+
+use Exception;
+
+class ErrCode extends Exception
+{
+    //
+    public const ERROR_LOGIN  = 1002; //登录失败
+    public const REQUIRED_TOKEN = 1003; //token验证失败
+    public const DATA_YES = 1011;
+    public const SIGN_RES = 1010; //标识重复
+    public const ALREADY_EXISTS_NO = 1019;
+    public const Register = 1020; //已注册
+    public const password_no = 1021; //密码错误
+    public const telephone_no = 1022; //帐号信息不存在
+    public const USER_INFO_NO = 1023; //用户信息不存在
+    public const is_card = 1024; //身份证号码验证错误
+    public const UPDATED_NO = 1025; //更新失败
+    public const pay_catch = 1028; //支付异常
+    public const  PAY_ERROR = 1029; //支付失败
+    public const GET_WX_ACCESS_TOKEN_NO = 1030; //获取微信access_token失败
+    public const FILE_SELECT = 1032; //请选择文件
+    public const FILE_UP = 1033; //上传方式有误
+    public const pwd_discord = 1034; //密码不一致
+    public const get_note_err = 1035; //获取失败
+    public const img_strlen = 1043; //图片上传有误
+    public const img_size_err = 1044; //图片上传大小不得超过5MB
+    public const file_size_err = 1045; //文件上传大小不得超过20MB
+    public const DELETE_NO = 1053; //删除失败
+    public const CREATE_NO  = 1054; //创建失败
+    public const ERROR_CATCH = 1055; //处理异常
+    public const is_exists = 1056; //查询信息不存在
+    public const ALREADY_EXISTS = 1057; //没有权限
+    public const ERROR = 1059; //未知错误
+    public const img_is_array = 1062; //图片格式有误
+    public const file_name_not = 1061; //文件上传格式有误
+    public const weihu = 1063; //维护中
+    public const get_ticket_no = 1064;//获取ticket失败
+    public const user_name_state_no = 1065;//账号已禁用
+
+
+}

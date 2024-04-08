@@ -1,0 +1,7 @@
+//--{{describe}}
+                $router->get('{{controller}}/index', [{{class_name}}::class,'index'])->name('{{controller_name}}.{{controller_name_str}}.index'); //列表
+                $router->post('{{controller}}/create', [{{class_name}}::class,'create'])->name('{{controller_name}}.{{controller_name_str}}.create'); //创建
+                $router->get('{{controller}}/show', [{{class_name}}::class,'show'])->name('{{controller_name}}.{{controller_name_str}}.show'); //详情
+                $router->post('{{controller}}/destroy', [{{class_name}}::class,'destroy'])->name('{{controller_name}}.{{controller_name_str}}.destroy'); //删除
+                
+                //addController
