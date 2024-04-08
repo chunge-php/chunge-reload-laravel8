@@ -1,0 +1,25 @@
+<?php
+
+
+use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\v1\TestController;
+use App\Http\Controllers\BaseController;
+
+//ControllerPath
+
+Route::prefix('v1')
+    ->namespace('Admin\v1')
+    ->name('admin.v1.')
+    ->group(function () {
+        //--测试
+        Route::middleware('throttle:' . config('admin.rate_limits.access'))
+            ->group(function (Router $router) {
+                $router->get('test', [TestController::class,'test'])->name('admin.test');
+            });
+        Route::middleware('throttle:' . config('admin.rate_limits.sign'))
+            ->group(function (Router $router) {
+
+             //addController
+            });
+    });

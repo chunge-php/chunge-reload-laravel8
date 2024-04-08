@@ -1,0 +1,9 @@
+<?php
+namespace App\Services\{{namespace}}\{{v}};
+use App\Services\BaseService;
+use App\Models\{{class_name}};
+class {{class_name}}Service extends BaseService
+{
+  //--{{describe}}
+  {{services_default}}
+}
