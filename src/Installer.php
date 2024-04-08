@@ -123,8 +123,8 @@ class Installer
     //创建逻辑层命令文件
     private function Logic()
     {
-        $file_name = 'Service';
-        $demo_name = 'ServiceDemo';
+        $file_name = 'ServiceClass';
+        $demo_name = 'ServiceClassDemo';
         $message = '创建逻辑层命令文件';
         $this->BaseCommands($file_name, $demo_name, $message);
     }

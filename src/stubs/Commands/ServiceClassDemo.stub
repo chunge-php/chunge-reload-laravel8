@@ -4,21 +4,21 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-class Service extends Command
+class ServiceClass extends Command
 {
      /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'make:service  {namespace} {class_name} {describe?} ';
+    protected $signature = 'service:class  {namespace} {class_name} {describe?} ';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'make logic';
+    protected $description = 'service class';
 
     /**
      * Create a new command instance.
