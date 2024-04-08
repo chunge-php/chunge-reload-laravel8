@@ -1,0 +1,13 @@
+<?php
+/**
+ * PHP实现jwt
+ */
+namespace App\MyClass;
+
+class CreateDatabase{
+
+    public function createInitServe()
+    {
+        
+    }
+}

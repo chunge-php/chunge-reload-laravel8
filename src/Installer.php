@@ -14,7 +14,7 @@ class Installer
     public  function copyFiles()
     {
         echo '开始执行安装ces';
-        
+
         $this->createCommands();
         $this->CreateMiddleware();
         $this->CreateMyClass();
@@ -128,7 +128,7 @@ class Installer
         $message = '创建逻辑层命令文件';
         $this->BaseCommands($file_name, $demo_name, $message);
     }
-  
+
     private function CreateDatabase()
     {
         $content = file_get_contents(__DIR__ . '\stubs\DatabaseDemo.stub');
@@ -183,6 +183,8 @@ class Installer
     private function CreateMyClass()
     {
         $this->CreateJwt();
+        $this->CreateMyDatabase();
+
         $this->CreateWxPay();
         $this->CreateAES();
     }
@@ -208,6 +210,14 @@ class Installer
         $message = '创建jwt文件';
         $this->BaseMyClass($file_name, $demo_name, $message);
     }
+    private function CreateMyDatabase()
+    {
+        $file_name = 'CreateDatabase';
+        $demo_name = 'CreateDatabaseDemo';
+        $message = '创建CreateDatabase文件';
+        $this->BaseMyClass($file_name, $demo_name, $message);
+    }
+
 
     //-----------------------------自定义方法文件------------------------------------//
 
@@ -470,7 +480,7 @@ class Installer
         $file_dir_path =  $project_path . $this->commands_path  . $file_path;
         $this->createFileSend($file_dir_path, $content, $message);
     }
-  
+
     private function getBasePath()
     {
         $project_path = explode('vendor', __DIR__);
