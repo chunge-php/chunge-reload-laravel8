@@ -14,7 +14,8 @@ class Installer
 
     public  function copyFiles()
     {
-        echo '开始执行安装';
+        echo '开始执行安装ces';
+        
         $this->createCommands();
         $this->CreateMiddleware();
         $this->CreateMyClass();
@@ -26,11 +27,12 @@ class Installer
         $this->CopyStubFile();
         $this->CopyRequestsFile();
         $this->CreateEnv();
+        $this->CopyControllerDir();
+        $this->CopyServicesDir();
         $this->CreateDatabase();
         $this->CreateModels();
         $this->CreateLogicBase();
         $this->CreateLogicFileBase();
-
         //创建安装记录标识
         $this->CreateInstallJosinFile();
         echo "执行成功 successfully!" . PHP_EOL;
@@ -38,7 +40,24 @@ class Installer
         $path =  'composer remove chunge/laravel';
         exec($path);
         echo "卸载成功 chunge/laravel !" . PHP_EOL;
+        sleep(4);
         $this->CreateComposer();
+    }
+    public function CopyServicesDir()
+    {
+        $sourcePath = __DIR__ . '/stubs/demo/stubs/Controller'; // 指定要复制的文件夹路径
+        $project_path = $this->getBasePath();
+        $destinationPath = $project_path . '/app/Http/Controllers';
+        // 执行文件复制操作
+        $this->recursiveCopy($sourcePath, $destinationPath);
+    }
+    public function CopyControllerDir()
+    {
+        $sourcePath = __DIR__ . '/stubs/demo/stubs/Services'; // 指定要复制的文件夹路径
+        $project_path = $this->getBasePath();
+        $destinationPath = $project_path . '/app/Http/Services';
+        // 执行文件复制操作
+        $this->recursiveCopy($sourcePath, $destinationPath);
     }
 
     //创建安装标识文件
@@ -300,7 +319,7 @@ class Installer
     private function CreateWebRoutes()
     {
         if ($this->BaseJianCe()) {
-            $content = file_get_contents(__DIR__ . '/stubs/WebRoutesDemo.stub');
+            $content = file_get_contents(__DIR__ . '/stubs/Route/WebRoutesDemo.stub');
             $project_path = $this->getBasePath();
             $file_path = '/web.php';
             $file_dir_path =  $project_path . $this->routes_path  . $file_path;
@@ -310,7 +329,7 @@ class Installer
     private function CreateAdminRoutes()
     {
         if ($this->BaseJianCe()) {
-            $content = file_get_contents(__DIR__ . '/stubs/AdminRoutesDemo.stub');
+            $content = file_get_contents(__DIR__ . '/stubs/Route/AdminRoutesDemo.stub');
             $project_path = $this->getBasePath();
             $file_path = '/admin.php';
             $file_dir_path =  $project_path . $this->routes_path  . $file_path;
@@ -320,7 +339,7 @@ class Installer
     private function CreateApiRoutes()
     {
         if ($this->BaseJianCe()) {
-            $content = file_get_contents(__DIR__ . '/stubs/ApiRoutesDemo.stub');
+            $content = file_get_contents(__DIR__ . '/stubs/Route/ApiRoutesDemo.stub');
             $project_path = $this->getBasePath();
             $file_path = '/api.php';
             $file_dir_path =  $project_path . $this->routes_path  . $file_path;
@@ -375,7 +394,7 @@ class Installer
 
     private function CreateComposer()
     {
-        
+
         $project_path = $this->getBasePath();
         $content = file_get_contents($project_path . 'composer.json');
         $arr  = json_decode($content, true);
@@ -461,7 +480,7 @@ class Installer
     }
     private function BaseCommands($file_name, $demo_name, $message = '')
     {
-        $content = file_get_contents(__DIR__ . '\stubs\\' . $demo_name . '.stub');
+        $content = file_get_contents(__DIR__ . '\stubs\Commands\\' . $demo_name . '.stub');
         $project_path = $this->getBasePath();
         $file_path = '/' . $file_name . '.php';
         $file_dir_path =  $project_path . $this->commands_path  . $file_path;

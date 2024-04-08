@@ -3,6 +3,8 @@
 
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\v1\TestController;
+use App\Http\Controllers\BaseController;
 //ControllerPath
 /*
 |--------------------------------------------------------------------------
@@ -21,11 +23,11 @@ Route::prefix('v1')
     ->name('api.v1.')
     ->group(function () {
         //--测试
-        Route::middleware('throttle:' . config('api.rate_limits.access') . '|60,1')
-            ->group(function (Router $router) {
-                $router->get('test', 'TestController@test')->name('api.test');
-            });
         Route::middleware('throttle:' . config('api.rate_limits.access'))
+            ->group(function (Router $router) {
+                $router->get('test', [TestController::class,'test'])->name('api.test');
+            });
+        Route::middleware('throttle:' . config('api.rate_limits.sign'))
             ->group(function (Router $router) {
 
              //addController

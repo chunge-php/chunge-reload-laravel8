@@ -6,6 +6,6 @@ class InstallCmd
 {
     public static function send()
     {
-        echo '执行cmd--------------------------' . PHP_EOL;
+        echo '执行cmd-----------------------' . PHP_EOL;
     }
 }
