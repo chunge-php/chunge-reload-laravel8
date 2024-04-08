@@ -1,6 +1,6 @@
 <?php
 
-namespace Chunge\Laravel;
+namespace Chunge\ReloadLaravel8;
 
 class InstallCmd
 {
