@@ -3,5 +3,5 @@
                 $router->post('{{controller}}/create', [BaseController::class,'BaseCreate'])->name('{{controller_name}}.{{controller_name_str}}Service.create'); //创建
                 $router->get('{{controller}}/show', [BaseController::class,'BaseShow'])->name('{{controller_name}}.{{controller_name_str}}Service.show'); //详情
                 $router->post('{{controller}}/destroy', [BaseController::class,'BaseDestroy'])->name('{{controller_name}}.{{controller_name_str}}Service.destroy'); //删除
-                
+                 //{{controller_name}}
                 //addController

@@ -1,0 +1,6 @@
+
+  //--{{describe}}
+  public function {{service_fun_name}}({{info}})
+  {
+  }
+  //service_fun

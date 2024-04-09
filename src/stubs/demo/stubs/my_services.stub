@@ -6,4 +6,5 @@ class {{class_name}}Service extends BaseService
 {
   //--{{describe}}
   {{services_default}}
+  //{{service_fun}}
 }

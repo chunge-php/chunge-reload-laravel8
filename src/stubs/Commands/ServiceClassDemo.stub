@@ -6,19 +6,19 @@ use Illuminate\Console\Command;
 
 class ServiceClass extends Command
 {
-     /**
+    /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'service:class  {namespace} {class_name} {describe?} ';
+    protected $signature = 'service:class  {service_fun_name} {service_file_name} {service_dir_name}  {version} {info} {describe?}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'service class';
+    protected $description = '创建单一的 api 接口模板方法';
 
     /**
      * Create a new command instance.
@@ -38,47 +38,95 @@ class ServiceClass extends Command
     public function handle()
     {
         $args = $this->arguments();
-        //模块名称 Admin Api
-        $namespace = $args['namespace'];
-        //类名称
-        $class_name = $args['class_name'];
+        //逻辑层里面的方法名称 GoodsIndex
+        $service_fun_name = $args['service_fun_name'];
+        //逻辑层文件名称
+        $service_file_name = $args['service_file_name'];
+        //逻辑层 模块文件名称 Admin Api
+        $service_dir_name = $args['service_dir_name'];
+        //逻辑层 版本号
+        $version = $args['version'];
+        //逻辑层 传入参数类型
+        $info = $this->infoValue($args['info']);
         //描述
         $describe = $args['describe'];
-        //逻辑层文件地址
-        $logic_file = app_path() . '/Logic' . "/{$namespace}/" . $class_name . '.php';
-        //命名空间
-        $logic_path = dirname($logic_file); //返回路径中的目录部分
-        //获取模板,替换变量
-        $logic = file_get_contents(base_path('/stubs/my_logic.stub'));
-        $source = str_replace('{{namespace}}', $namespace, $logic);
-        $source = str_replace('{{describe}}', $describe, $source);
-        $source = str_replace('{{class_name}}', $class_name, $source);
-        $source = str_replace('{{logic_default}}', '', $source);
-        $source = str_replace('{{model_name}}', $class_name, $source);
-        $this->createFileSend($logic_file, $logic_path, $source, '逻辑层');
 
+        //逻辑层文件地址
+        $service_file_path = app_path()  . "\\Services\\{$service_dir_name}\\{$version}\\{$service_file_name}Service.php";
+
+        //验证文件是否存在
+        if (file_exists($service_file_path)) {
+            $service_default = file_get_contents($service_file_path);
+            $searchString = "function {$service_fun_name}";
+            // 判断文件中是否包含指定字符串
+            if (strpos($service_default, $searchString) !== false) {
+                $this->error("此文件中已经存在：{$service_fun_name}方法");
+                die;
+            }
+        } else {
+            $service_path = dirname($service_file_path); //返回路径中的目录部分
+            $this->createFileSend($service_file_path, $service_path, '逻辑层');
+            $service_default = file_get_contents(base_path('/stubs/service_default.stub'));
+        }
+        //写入内容
+        $content = str_replace('{{service_file_name}}', $service_file_name, $service_default);
+        $content = str_replace('{{service_dir_name}}', $service_dir_name, $content);
+        $content = str_replace('{{version}}', $version, $content);
+        $content = str_replace('{{describe}}', $describe, $content);
+
+        $service_demo = file_get_contents(base_path('/stubs/service_demo.stub'));
+        $content_demo = str_replace('{{describe}}', $describe, $service_demo);
+        $content_demo = str_replace('{{service_fun_name}}', $service_fun_name, $content_demo);
+        $content_demo = str_replace('{{info}}', $info, $content_demo);
+        $content = str_replace('//service_fun', $content_demo, $content);
+
+        $this->writeFile($service_file_path, $content);
     }
-      /**
+    public function infoValue($info)
+    {
+        switch ($info) {
+            case 'index':
+                $value = '$info,$limit = 20, $offset = 1';
+                break;
+            case 'show':
+                $value = '$info';
+                break;
+            case 'del':
+                $value = '$info';
+                break;
+            default:
+                $value = $info;
+                break;
+        }
+        return $value;
+    }
+    /**
+     * 写入文件
+     */
+    public function writeFile($service_file, $content)
+    {
+        //写入
+        if (file_put_contents($service_file, $content)) {
+            $this->info("文件写入成功： {$service_file}");
+            return true;
+        }
+        $this->error("文件写入失败： {$service_file}");
+        return false;
+    }
+    /**
      * 执行文件创建
      */
-    public function createFileSend($logic_file, $logic_path, $source, $message = '')
+    public function createFileSend($service_file, $service_path, $message = '')
     {
         //是否已存在相同文件
-        if (file_exists($logic_file)) {
-            $this->error("{$message}文件已存在");
-            exit;
+        if (file_exists($service_file)) {
+            $this->info("{$message}文件已存在");
         }
         //创建
-        if (file_exists($logic_path) === false) {
-            if (mkdir($logic_path, 0777, true) === false) {
-                $this->error("{$message}目录" . $logic_path . '没有写入权限');
-                exit;
+        if (file_exists($service_path) === false) {
+            if (mkdir($service_path, 0777, true) === false) {
+                $this->error("{$message}目录 创建失败");
             }
-        }
-        //写入
-        if (!file_put_contents($logic_file, $source)) {
-            $this->error("{$message}创建失败！");
-            exit;
         }
         $this->info("{$message}创建成功！");
     }

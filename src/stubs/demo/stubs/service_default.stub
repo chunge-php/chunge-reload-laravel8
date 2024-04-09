@@ -1,0 +1,13 @@
+<?php
+namespace App\Services\{{service_dir_name}}\{{version}};
+use App\Services\BaseService;
+class {{service_file_name}}Service extends BaseService
+{
+  //--{{describe}}
+  public function __construct()
+  {
+    
+  }
+  //service_fun
+  
+}
